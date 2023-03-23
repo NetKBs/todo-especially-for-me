@@ -1,0 +1,24 @@
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	font-family: sans-serif;
+}
+
+h1, main{
+	text-align: center;
+}
+
+#avaible-options {
+	background-color: gainsboro;
+	display:inline-block;
+	width: 30%;
+}
+
+#view-products {
+	background-color: gainsboro;
+	display: inline-block;
+	width: 65%;
+}
