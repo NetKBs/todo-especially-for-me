@@ -235,6 +235,9 @@ const addTodo = () => {
 
     } else {
         createTodo(textbox.value.trim(), datePicker.value, description.value.trim());
+        textbox.value = "";
+        datePicker.value = "";
+        description.value = "";
         todoList.render();
     }
 
