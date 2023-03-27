@@ -23,6 +23,8 @@ const todoList =  {
             //Manage editing state
             if (todo.isEditing === true) {
 
+                element.classList.add('my-2');
+
                 const newTextbox = document.createElement('input');
                 newTextbox.type = 'text';
                 newTextbox.value = todo.title;
@@ -37,14 +39,14 @@ const todoList =  {
 
                 const updateButton  = document.createElement('button');
                 updateButton.innerText = 'Update';
-                updateButton.classList.add('btn', 'btn-outline-success');
+                updateButton.classList.add('btn', 'my-1', 'btn-sm', 'btn-outline-success');
                 updateButton.dataset.todoId = todo.id; 
                 updateButton.onclick = event => onUpdate(index, event);
 
                 /* Textarea for addiontal description of the task */
-                const description = document.createElement('input');
-                description.type = 'textarea';
-                description.value = todo.description;
+                const description = document.createElement('textarea');
+                description.innerText = todo.description;
+                description.classList.add('todo-description');
                 description.dataset.todoId = todo.id; 
                 description.placeholder = 'More about...';
                 description.classList.add('col-12');
@@ -92,12 +94,11 @@ const todoList =  {
                 div_todo_left_items.prepend(checkbox);
 
                 /* Textarea for addiontal description of the task */
-                const description = document.createElement('input');
-                description.type = 'textarea';
-                description.value = todo.description;
+                const description = document.createElement('textarea');
+                description.innerText = todo.description;
                 description.placeholder = 'More about...';
                 description.disabled = true;
-                description.classList.add('col-12');
+                description.classList.add('col-12', 'todo-description');
                 // Check if it should show the todo description
                 if (!todo.shownDescription) {
                     description.classList.add('hidden-description');
@@ -125,7 +126,7 @@ const todoList =  {
 ///////////////////////////////////////////////////////////////////////////*/
 
 // Creates a Todo
-const createTodo = (title, dueDate) => {
+const createTodo = (title, dueDate, description) => {
     const id = '' + new Date().getTime(); // time in miliseconds
 
     todoList.todos.push({
@@ -133,7 +134,7 @@ const createTodo = (title, dueDate) => {
         dueDate: dueDate,
         isDone: false,
         isEditing: false,
-        description: "",
+        description: description,
         shownDescription: false,
         id: id
     });
@@ -227,12 +228,13 @@ const checkboxState = (index, event) => {
 const addTodo = () => {
     const textbox = document.getElementById('todo-title');
     const datePicker = document.getElementById('date-picker');
+    const description = document.getElementById('todo-description');
 
     if (textbox.value.trim() == "") {
         textbox.classList.add('warning');
 
     } else {
-        createTodo(textbox.value.trim(), datePicker.value);
+        createTodo(textbox.value.trim(), datePicker.value, description.value.trim());
         todoList.render();
     }
 
