@@ -62,13 +62,17 @@ const todoList = {
                 // If the todo is not in editing state, create elements for displaying it
 
                 /* Create a span element for the due date, or an empty 
-                    string if there is no due date */
+                   string if there is no due date. The same for the title
+                   create a span or just leave it normal */
                 const dueDate_text = todo.dueDate == "" ? "" : `<span class="dueDate">${todo.dueDate}</span>`;
                 const title_text = todo.isDone === true ? `<span class="text-decoration-line-through">${todo.title}</span>` : todo.title;
 
+
+                // <p> etiquete for the task title
                 const titleP = document.createElement('p');
                 titleP.innerHTML = `<span class="task-title-text">${title_text} ${dueDate_text}</span>`;
-                // Add an event listener to the titleP element to display the task description when clicked
+                /* Add an event listener to the titleP element to display the task 
+                   description when clicked*/
                 titleP.addEventListener('click', () => descriptionDisplayState(index));
                 div_todo_left_items.appendChild(titleP);
 
@@ -76,7 +80,6 @@ const todoList = {
                 if (!todo.isDone) {
                     const editButton = document.createElement('button');
                     editButton.innerText = 'Edit';
-                    editButton.dataset.todoId = todo.id;
                     editButton.classList.add('btn', 'edit-btn', 'btn-sm', 'btn-outline-info');
                     editButton.onclick = () => editState(index);
                     div_todo_right_items.appendChild(editButton);
@@ -86,14 +89,12 @@ const todoList = {
                 const deleteButton = document.createElement('button');
                 deleteButton.innerText = 'Delete';
                 deleteButton.onclick = () => onDelete(todo);
-                deleteButton.id = todo.id;
                 deleteButton.classList.add('btn', 'btn-sm', 'btn-outline-danger');
                 div_todo_right_items.appendChild(deleteButton);
 
                 // Add a checkbox to mark as Done or not a todo
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.dataset.todoId = todo.id;
                 checkbox.classList.add('checkbox-todo', 'form-check-input');
                 checkbox.onchange = event => checkboxState(index, event);
                 // Set checkbox state
@@ -162,7 +163,7 @@ const changeCheckboxState = (checkbox, index) => {
 }
 
 /* Toggles the shownDescription property of a Todo 
-to show or hide its description*/
+   to show or hide its description*/
 const changeDisplayState = index => {
     if (todoList.todos[index].shownDescription) {
         todoList.todos[index].shownDescription = false;
@@ -225,21 +226,21 @@ const onDelete = todo => {
 }
 
 /* Toggles the display of a todo's description when the user clicks 
-on the description button*/
+   on the description button*/
 const descriptionDisplayState = index => {
     changeDisplayState(index);
     todoList.render();
 }
 
 /* Toggles the editing state of a todo when the user clicks 
-on the edit button*/
+   on the edit button*/
 const editState = index => {
     changeEditState(index);
     todoList.render();
 };
 
 /* Handles changing the state of a todo's checkbox when the 
-user clicks on it*/
+   user clicks on it*/
 const checkboxState = (index, event) => {
     const checkbox = event.target;
     changeCheckboxState(checkbox, index);
@@ -247,14 +248,14 @@ const checkboxState = (index, event) => {
 }
 
 /* Adds a new todo to the todo list when the user clicks 
-on the add todo button*/
+   on the add todo button*/
 const addTodo = () => {
     const textbox = document.getElementById('todo-title');
     const datePicker = document.getElementById('date-picker');
     const description = document.getElementById('todo-description');
 
     /* Checks if the todo title input is empty and adds a warning 
-    class to it */
+       class to it */
     if (textbox.value.trim() == "") {
         textbox.classList.add('warning');
 
