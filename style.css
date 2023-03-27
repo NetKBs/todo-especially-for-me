@@ -15,12 +15,13 @@ body {
 }
 
 #todo-title {
-	width: 84%;
+	width: 50%;
 }
 
-@media screen and (min-width: 600px) {
-  #todo-title {
-  	width: 50%;
+@media screen and (max-width: 600px) {
+  #date-picker {
+  	width: 100%;
+  	margin: 0px;
   }
 }
 
