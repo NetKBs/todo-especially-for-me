@@ -6,9 +6,7 @@ body {
 	padding: 0px;
 }
 
-.input-group {
-	box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.3);
-}
+/* Elements from div to add a new task  */
 
 #task-create-control {
 	position: sticky;
@@ -16,10 +14,28 @@ body {
 	z-index: 100;
 }
 
+#todo-title {
+	width: 84%;
+}
+
+@media screen and (min-width: 600px) {
+  #todo-title {
+  	width: 50%;
+  }
+}
+
+.input-group {
+	box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.3);
+}
 
 .form-control, #btn-add {
 	border-radius: 0px;
 }
+
+/* List of ToDos added */
+
+#todo-list {
+	margin-top: 6px;
 }
 
 .list-group {
@@ -34,29 +50,9 @@ body {
 
 }
 
+/* Elements from the left in todos */
 .div-todo-left-items {
 	display: flex;
-}
-
-#todo-list {
-	margin-top: 6px;
-}
-
-#todo-title {
-	width: 84%;
-}
-
-@media screen and (min-width: 600px) {
-  #todo-title {
-  	width: 50%;
-  }
-}
-
-.dueDate {
-	border-radius: 8px;
-	box-shadow: 0 0 4px 1px seagreen;	
-	padding:  1px 6px;
-	margin-left: 4px;
 }
 
 .checkbox-todo {
@@ -68,13 +64,22 @@ body {
 	cursor: pointer;
 }
 
+.dueDate {
+	border-radius: 8px;
+	box-shadow: 0 0 4px 1px seagreen;	
+	padding:  1px 6px;
+	margin-left: 4px;
+}
+
+
+/* Elements from the right of todos */
 .edit-btn {
 	margin-right: 4px;
 	margin-left: 1px;
 }
 
-/* TextArea Desription */
 
+/* TextArea Desription */
 .todo-description {
 	resize: none;
 }
@@ -83,7 +88,7 @@ body {
 	display: none;
 }
 
-
+/* Effects */
 @keyframes warning-blink {
 	0% {border-color:red;box-shadow: inset 0 0 10px 2px red;}
 }
