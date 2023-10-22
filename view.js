@@ -1,9 +1,7 @@
-/*///////////////////////////////////////////////////////////////////////////  
-                                    View
-///////////////////////////////////////////////////////////////////////////*/
+import * as controller from "./controller.js"
 
 //Observer
-const todoList = {
+export const todoList = {
     todos: [],
 
     render: function() {
@@ -46,7 +44,7 @@ const todoList = {
                 updateButton.innerText = 'Update';
                 updateButton.classList.add('btn', 'my-1', 'btn-sm', 'btn-outline-success');
                 updateButton.dataset.todoId = todo.id;
-                updateButton.onclick = event => onUpdate(index, event);
+                updateButton.onclick = event => controller.onUpdate(index, event);
                 element.appendChild(updateButton);
 
                 // Create a textarea element for additional task description
@@ -73,7 +71,7 @@ const todoList = {
                 titleP.innerHTML = `<span class="task-title-text">${title_text} ${dueDate_text}</span>`;
                 /* Add an event listener to the titleP element to display the task 
                    description when clicked*/
-                titleP.addEventListener('click', () => descriptionDisplayState(index));
+                titleP.addEventListener('click', () => controller.descriptionDisplayState(index));
                 div_todo_left_items.appendChild(titleP);
 
                 // If the task is not done, create a button to allow edit it
@@ -81,22 +79,22 @@ const todoList = {
                     const editButton = document.createElement('button');
                     editButton.innerText = 'Edit';
                     editButton.classList.add('btn', 'edit-btn', 'btn-sm', 'btn-outline-info');
-                    editButton.onclick = () => editState(index);
+                    editButton.onclick = () => controller.editState(index);
                     div_todo_right_items.appendChild(editButton);
                 }
 
                 // Add a Delete button to every todo
                 const deleteButton = document.createElement('button');
                 deleteButton.innerText = 'Delete';
-                deleteButton.onclick = () => onDelete(todo);
+                deleteButton.onclick = () => controller.onDelete(todo);
                 deleteButton.classList.add('btn', 'btn-sm', 'btn-outline-danger');
                 div_todo_right_items.appendChild(deleteButton);
 
                 // Add a checkbox to mark as Done or not a todo
-                const checkbox = document.createElement('input');font
+                const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.classList.add('checkbox-todo', 'form-check-input');
-                checkbox.onchange = event => checkboxState(index, event);
+                checkbox.onchange = event => controller.checkboxState(index, event);
                 // Set checkbox state
                 if (todo.isDone === true) {
                     checkbox.checked = true;
@@ -128,165 +126,16 @@ const todoList = {
 }
 
 
-
-/*///////////////////////////////////////////////////////////////////////////  
-                                    Model
-///////////////////////////////////////////////////////////////////////////*/
-
-// Creates a new Todo object and adds it to the todoList
-const createTodo = (title, dueDate, description) => {
-    const id = '' + new Date().getTime();
-
-    todoList.todos.push({
-        title: title,
-        dueDate: dueDate,
-        isDone: false,
-        isEditing: false,
-        description: description,
-        shownDescription: false,
-        id: id
-    });
-
-    saveTodos();
-}
-
-// Removes a Todo from the todoList based on its ID
-const removeTodo = idToDelete => {
-    todoList.todos = todoList.todos.filter(todo => todo.id !== idToDelete);
-    saveTodos();
-}
-/* Changes the isDone property of a Todo based on the
-   state of its associated checkbox*/
-const changeCheckboxState = (checkbox, index) => {
-    todoList.todos[index].isDone = checkbox.checked;
-    saveTodos();
-}
-
-/* Toggles the shownDescription property of a Todo 
-   to show or hide its description*/
-const changeDisplayState = index => {
-    if (todoList.todos[index].shownDescription) {
-        todoList.todos[index].shownDescription = false;
-    } else {
-        todoList.todos[index].shownDescription = true;
-    }
-}
-
-// Updates the properties of a Todo at the specified index with new values
-const updateTodo = (title, dueDate, description, index) => {
-    todoList.todos[index].title = title;
-    todoList.todos[index].dueDate = dueDate;
-    todoList.todos[index].description = description;
-
-    changeEditState(index);
-    saveTodos();
-}
-
-// Toggles the isEditing property of a Todo to enter or exit edit mode
-const changeEditState = index => {
-
-    if (todoList.todos[index].isEditing === false) {
-        todoList.todos[index].isEditing = true;
-    } else {
-        todoList.todos[index].isEditing = false;
-    }
-
-}
-
-// Converts the todoList array to a string and saves it to local storage
-const saveTodos = () => localStorage.setItem('todos', JSON.stringify(todoList.todos));
-
-
-/*///////////////////////////////////////////////////////////////////////////  
-                                Controller
-///////////////////////////////////////////////////////////////////////////*/
-
-
-// Handles updating a todo when the user clicks on the update button
-const onUpdate = (index, event) => {
-    const todoId = event.target.dataset.todoId;
-    const todoInputs = document.querySelectorAll(`[data-todo-id="${todoId}"]:not(button)`);
-    const textbox = todoInputs[0];
-    const datePicker = todoInputs[1];
-    const description = todoInputs[2];
-
-    // Checks if the todo title input is empty and adds a warning class to it 
-    if (textbox.value.trim() == "") {
-        textbox.classList.add('warning');
-    } else {
-        updateTodo(textbox.value.trim(), datePicker.value, description.value.trim(), index);
-        todoList.render();
-    }
-}
-
-// Handles deleting a todo when the user clicks on the delete button
-const onDelete = todo => {
-    removeTodo(todo.id);
-    todoList.render();
-}
-
-/* Toggles the display of a todo's description when the user clicks 
-   on the description button*/
-const descriptionDisplayState = index => {
-    changeDisplayState(index);
-    todoList.render();
-}
-
-/* Toggles the editing state of a todo when the user clicks 
-   on the edit button*/
-const editState = index => {
-    changeEditState(index);
-    todoList.render();
-};
-
-/* Handles changing the state of a todo's checkbox when the 
-   user clicks on it*/
-const checkboxState = (index, event) => {
-    const checkbox = event.target;
-    changeCheckboxState(checkbox, index);
-    todoList.render();
-}
-
-/* Adds a new todo to the todo list when the user clicks 
-   on the add todo button*/
-const addTodo = () => {
-    const textbox = document.getElementById('todo-title');
-    const datePicker = document.getElementById('date-picker');
-    const description = document.getElementById('todo-description');
-
-    /* Checks if the todo title input is empty and adds a warning 
-       class to it */
-    if (textbox.value.trim() == "") {
-        textbox.classList.add('warning');
-
-    } else {
-        createTodo(textbox.value.trim(), datePicker.value, description.value.trim());
-        textbox.value = "";
-        datePicker.value = "";
-        description.value = "";
-        todoList.render();
-    }
-
-}
-
-
-/*///////////////////////////////////////////////////////////////////////////  
-                                Initialization
-///////////////////////////////////////////////////////////////////////////*/
-
 // Retrieve localStorage (convert it to an array)
 const savedTodos = JSON.parse(localStorage.getItem('todos'));
-// check if it's an array
+
 if (Array.isArray(savedTodos)) {
     todoList.todos = savedTodos;
 } else {
     todoList.todos = [];
 }
 
-todoList.render(); // update view
+todoList.render(); 
 
-// Events
-// To add a new todo
-document.getElementById('btn-add').addEventListener('click', addTodo);
-//To handler visual effects with inputs errors
+document.getElementById('btn-add').addEventListener('click', controller.addTodo);
 document.getElementById('todo-title').addEventListener('animationend', event => event.target.classList.remove('warning'));
