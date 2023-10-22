@@ -22,7 +22,7 @@ export const onDelete = todo => {
 }
 
 export const descriptionDisplayState = index => {
-    model.changeDisplayState(index);
+    model.changeDescriptionState(index);
     todoList.render();
 }
 
@@ -42,9 +42,7 @@ export const addTodo = () => {
     const datePicker = document.getElementById('date-picker');
     const description = document.getElementById('todo-description');
 
-    /* Checks if the todo title input is empty and adds a warning 
-       class to it */
-    if (textbox.value.trim() == "") {
+    if (textbox.value.trim() == "") { // warning effect
         textbox.classList.add('warning');
 
     } else {

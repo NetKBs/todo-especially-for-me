@@ -26,9 +26,8 @@ export const changeCheckboxState = (checkbox, index) => {
     saveTodos();
 }
 
-/* Toggles the shownDescription property of a Todo 
-   to show or hide its description*/
-export const changeDisplayState = index => {
+// toggle description
+export const changeDescriptionState = index => {
     if (todoList.todos[index].shownDescription) {
         todoList.todos[index].shownDescription = false;
     } else {
