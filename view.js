@@ -7,8 +7,9 @@ export const todoList = {
     render: function() {
 
         const todoListContainer = document.getElementById('todo-list');
-        todoListContainer.innerHTML = '';
         const fragment = document.createDocumentFragment()
+
+        todoListContainer.innerHTML = '';
 
         this.todos.forEach((todo, index) => {
 
@@ -23,34 +24,42 @@ export const todoList = {
                 todoContainer.classList.add('my-2');
 
                 const newTextbox = document.createElement('input');
-                newTextbox.type = 'text';
-                newTextbox.value = todo.title;
-                newTextbox.dataset.todoId = todo.id;
-                newTextbox.classList.add('form-control');
-                todoContainer.appendChild(newTextbox);
-
                 const newDatePicker = document.createElement('input');
-                newDatePicker.type = 'date';
-                newDatePicker.value = todo.dueDate;
-                newDatePicker.dataset.todoId = todo.id;
-                newTextbox.classList.add('form-control');
-                todoContainer.appendChild(newDatePicker);
-
                 const updateButton = document.createElement('button');
-                updateButton.innerText = 'Update';
-                updateButton.classList.add('btn', 'my-1', 'btn-sm', 'btn-outline-success');
-                updateButton.dataset.todoId = todo.id;
-                updateButton.onclick = event => controller.onUpdate(index, event);
-                todoContainer.appendChild(updateButton);
-
                 const description = document.createElement('textarea');
-                description.innerText = todo.description;
-                description.classList.add('todo-description');
-                description.dataset.todoId = todo.id;
-                description.placeholder = 'More about...';
-                description.classList.add('col-12');
-                todoContainer.appendChild(description);
 
+                Object.assign(newTextbox, {
+                    type: "text",
+                    value: todo.title,
+                    classList: 'form-control',
+                })
+                newTextbox.dataset.todoId = todo.id;
+
+                Object.assign(newDatePicker, {
+                    type: "date",
+                    value: todo.dueDate,
+                })
+                newDatePicker.dataset.todoId = todo.id;
+
+                Object.assign(updateButton, {
+                    innerText: "Update",
+                    classList: "btn my-1 btn-sm btn-outline-success", 
+                    onclick:  event => controller.onUpdate(index, event),
+                })
+                updateButton.dataset.todoId = todo.id;
+
+                Object.assign(description, {
+                    innerText: todo.description,
+                    placeholder: "More about...",
+                    classList: "todo-description col-12",
+                })
+                description.dataset.todoId = todo.id;
+
+                todoContainer.appendChild(newTextbox);
+                todoContainer.appendChild(newDatePicker);
+                todoContainer.appendChild(updateButton);
+                todoContainer.appendChild(description);
+               
             } else {
 
                 const dueDate_text = todo.dueDate == "" ? "" : `<span class="dueDate">${todo.dueDate}</span>`;
@@ -70,28 +79,33 @@ export const todoList = {
                 }
 
                 const deleteButton = document.createElement('button');
-                deleteButton.innerText = 'Delete';
-                deleteButton.onclick = () => controller.onDelete(todo);
-                deleteButton.classList.add('btn', 'btn-sm', 'btn-outline-danger');
-                div_todo_right_items.appendChild(deleteButton);
-
                 const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.classList.add('checkbox-todo', 'form-check-input');
-                checkbox.onchange = event => controller.checkboxState(index, event);
-
-                if (todo.isDone === true) checkbox.checked = true;
-                
-                div_todo_left_items.prepend(checkbox);
-
                 const description = document.createElement('textarea');
-                description.innerText = todo.description;
-                description.placeholder = 'More about...';
-                description.disabled = true;
-                description.classList.add('col-12', 'todo-description');
 
+                Object.assign(deleteButton, {
+                    innerText: "Delete",
+                    classList: "btn btn-sm btn-outline-danger",
+                    onclick: () => controller.onDelete(todo)
+                })
+
+                Object.assign(checkbox, {
+                    type: "checkbox",
+                    classList: "checkbox-todo form-check-input",
+                    onchange: event => controller.checkboxState(index, event)
+                })
+                if (todo.isDone === true) checkbox.checked = true;
+
+                Object.assign(description, {
+                    innerText: todo.description,
+                    placeholder: "More about...",
+                    disabled: true,
+                    classList: 'col-12 todo-description',
+                })
                 if (!todo.shownDescription) description.classList.add('hidden-description');
 
+
+                div_todo_right_items.appendChild(deleteButton);
+                div_todo_left_items.prepend(checkbox);
                 todoContainer.appendChild(div_todo_left_items);
                 todoContainer.appendChild(div_todo_right_items);
                 todoContainer.appendChild(description);
