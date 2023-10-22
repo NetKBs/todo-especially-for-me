@@ -6,8 +6,9 @@ export const todoList = {
 
     render: function() {
         // Get the DOM element for the todo list
-        const todoListElement = document.getElementById('todo-list');
-        todoListElement.innerHTML = '';
+        const todoListContainer = document.getElementById('todo-list');
+        todoListContainer.innerHTML = '';
+        const fragment = document.createDocumentFragment()
 
         this.todos.forEach((todo, index) => {
             // Create a div element for the todo
@@ -118,9 +119,11 @@ export const todoList = {
                 element.appendChild(description);
             }
 
-            todoListElement.appendChild(element);
+            fragment.appendChild(element);
 
         });
+        
+        todoListContainer.appendChild(fragment)
     },
 
 }
